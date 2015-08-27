@@ -1,8 +1,15 @@
-
 import openpyxl
 import matplotlib.pyplot as plt
-
 from array import array
+import plotly
+
+
+plotly.tools.set_credentials_file(username='doctorUltra', api_key='4t4uqm8oh8')
+
+
+import plotly.plotly as py
+from plotly.graph_objs import *
+
 
 book=openpyxl.load_workbook('/media/demon/work/Python/cg.xlsx')
 sheet=book.get_sheet_by_name('Table 1')
@@ -19,7 +26,14 @@ for y in range(1,1000):
 		x=float(d.value)	
 		a.append(x)
 		
+data = Data([
+    Histogram(
+        x=a
+    )
+])		
+
+
+plot_url = py.plot(data, filename='basic-histogram')		
 			
 plt.hist(a, bins=100)
-
 plt.show()	
