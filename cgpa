@@ -1,1 +1,24 @@
 
+import openpyxl
+import matplotlib.pyplot as plt
+
+from array import array
+
+book=openpyxl.load_workbook('/media/demon/work/Python/cg.xlsx')
+sheet=book.get_sheet_by_name('Table 1')
+p=0
+avg=0.0
+
+
+a = array('d')
+
+for y in range(1,1000):
+
+	d=sheet.cell(row=y,column=3)
+	if(d.value!='cgpa'):
+		x=float(d.value)	
+		a.append(x)
+		
+			
+plt.hist(a, bins=100)
+plt.show()	
