@@ -12,9 +12,9 @@ with requests.Session() as c:
 
 	url='https://channeli.in/login/'
 
-	USERNAME='13116006'
+	USERNAME='your_username'
 
-	PASSWORD='physicsgalaxy'
+	PASSWORD='your_password'
 
 	c.get(url)
 
