@@ -1,0 +1,86 @@
+import re
+import requests
+import openpyxl
+
+book=openpyxl.load_workbook('/media/demon/work/Python/placement.xlsx')
+
+sheet=book.get_sheet_by_name('Sheet1')
+
+z=1
+q=1
+with requests.Session() as c:
+
+	url='https://channeli.in/login/'
+
+	USERNAME='13116006'
+
+	PASSWORD='physicsgalaxy'
+
+	c.get(url)
+
+	csrftoken= c.cookies['csrftoken']
+
+	login_data= dict(csrfmiddlewaretoken=csrftoken, username=USERNAME, password=PASSWORD, next='/')
+
+	c.post(url,data=login_data, headers={"Referer": "https://channeli.in/"})
+
+	page=c.get('https://channeli.in/placement/results/2014/company/')
+
+	html= page.content
+
+	regex= '<a href="/placement/results/2014/company/(.+?)/">View</a>'
+
+	d=re.compile(regex)
+
+	p=re.findall(d,html)
+	
+	print ('process started')
+	
+	for x in range(0,len(p)):
+		
+		ur='https://channeli.in/placement/results/2014/company/'+p[x]+'/'
+		
+		pg=c.get(ur)
+		
+		pd=pg.content
+		
+		regex1='<td>(.+?)</td>'
+		
+		regex2='<h3>Placement results for (.+?)</h3>'
+		
+		d1=re.compile(regex1)
+		
+		d2=re.compile(regex2)
+		
+		data=re.findall(d1,pd)
+		
+		company=re.findall(d2,pd)
+		
+		l=len(data)/5
+		
+#		for t in range(q,q+l):
+			
+
+#			cell_r=sheet.cell(row=t,column=1)
+#			cell_n=sheet.cell(row=t,column=2)
+#			cell_b=sheet.cell(row=t,column=3)
+
+#			cell_r.value=data[1+5*(t-q)]
+#			cell_n.value=data[2+5*(t-q)]
+#			cell_b.value=data[3+5*(t-q)]
+
+#		q+=l
+
+		
+
+#		for y in range(z,z+l):
+#			cell_c=sheet.cell(row=y,column=4)			
+#			cell_c.value=company[0]
+#			z+=1
+
+		if(x%26==0):
+			print(str((x/26)*10)+' % '+' completed')
+	
+	book.save('/media/demon/work/Python/placement.xlsx')
+	
+	print('100 % completed')
