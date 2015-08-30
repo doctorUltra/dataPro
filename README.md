@@ -1,2 +1,2 @@
-# dataPro
+# data Projects
 small data projects
